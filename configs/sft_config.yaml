@@ -1,0 +1,30 @@
+# =============================================================================
+# SFT Training Configuration (Best: Stage 1)
+# =============================================================================
+
+# Model
+base_model: Qwen2.5-3B-Base
+training_type: full_finetune  # full_finetune or lora
+
+# Data
+data: sft_combined_v5.jsonl  # 28,098 distilled samples
+max_seq_length: 4096
+
+# Training
+num_epochs: 3
+learning_rate: 2e-5
+lr_scheduler: cosine
+warmup_ratio: 0.03
+weight_decay: 0.1
+batch_size: 4
+gradient_accumulation_steps: 4
+effective_batch_size: 16
+
+# Checkpointing
+save_steps: 500
+best_checkpoint: checkpoint-3000  # 59.80% MATH-500
+
+# Notes
+# - Full fine-tuning outperforms LoRA for this task
+# - 3 epochs with cosine scheduler, best at step 3000
+# - Data quality matters more than quantity (28K > 100K)
