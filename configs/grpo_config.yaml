@@ -1,0 +1,37 @@
+# =============================================================================
+# GRPO Training Configuration (Best: Stage 2)
+# =============================================================================
+
+# Model
+base_model: SFT-checkpoint-3000  # 59.80% MATH-500
+
+# Data
+data: rl_50k.jsonl  # 50,000 RL problems (OpenThoughts math)
+
+# GRPO Config
+loss_type: dapo  # Dynamic Advantage Policy Optimization
+group_size: 32  # Number of generations per prompt (G)
+temperature: 0.9  # Sampling temperature for generation
+beta: 0.0  # KL penalty (0 = no reference model needed)
+epsilon: 0.1  # PPO clipping lower bound
+epsilon_high: 0.28  # PPO clipping upper bound (DAPO asymmetric)
+
+# Training
+learning_rate: 3e-7
+lr_scheduler: constant  # No decay
+gradient_accumulation_steps: 4
+max_steps: 300
+
+# Reward
+reward_type: correctness_only  # Binary: correct=2.0, wrong=0.0
+mask_truncated: true  # Ignore truncated generations
+
+# Checkpointing
+save_steps: 25
+best_checkpoint: checkpoint-300  # 61.40% MATH-500 greedy
+
+# Notes
+# - G=32 is optimal (G=16: 60.4%, G=64: 60.8%)
+# - Constant lr=3e-7 better than cosine lr=1e-6
+# - DAPO loss (no KL) works best on this hardware (avoids OOM from ref model)
+# - Beta > 0 requires reference model → doubles VRAM → OOM on 64GB
