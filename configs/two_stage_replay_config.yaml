@@ -1,0 +1,38 @@
+# =============================================================================
+# Two-Stage SFT with Replay Configuration
+# =============================================================================
+
+# Stage 1: Base Math
+stage1:
+  base_model: Qwen2.5-3B-Base
+  data: sft_openthoughts_82k.jsonl  # OpenThoughts math subset
+  training_type: lora
+  lora_rank: 256
+  learning_rate: 2e-5
+  num_epochs: 1
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 2048
+  warmup_ratio: 0.1
+  result: "GSM8K ~69%, MATH-500 ~39%"
+
+# Stage 2: Competition Math + Replay
+stage2:
+  base_model: Stage1-merged  # Merged LoRA weights
+  data: competition_20k + ot_replay_20k  # 40K total
+  training_type: lora
+  lora_rank: 256
+  learning_rate: 2e-6  # Lower lr for stage 2
+  num_epochs: 1
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 2048
+  warmup_ratio: 0.1
+  result: "GSM8K ~73%, MATH-500 ~45%"
+
+# Key Findings:
+# - Replay (mixing stage-1 data into stage-2) prevents catastrophic forgetting
+# - Without replay: GSM8K drops from 69% to 58% (-11%)
+# - With replay: GSM8K improves to 73% (+4%)
+# - Lower lr (2e-6) in stage 2 is critical
+# - Three stages (adding stage 3) does NOT help
