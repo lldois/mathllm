@@ -32,4 +32,4 @@ python evaluation/evaluate_majority_vote.py \
 
 echo ""
 echo "Result:"
-python -c "import json; d=json.load(open('$OUTPUT_PATH')); print(f'  MATH-500 MV@$NUM_VOTES Accuracy: {d[\"summary\"][\"accuracy\"]*100:.2f}%')"
+python -c "import json; d=json.load(open('$OUTPUT_PATH')); print(f'  MATH-500 MV@$NUM_VOTES Accuracy: {d[\"summary\"][\"accuracy_majority_vote\"]*100:.2f}%')"

@@ -241,7 +241,7 @@ mathllm/
     └── dpo_config.yaml        # DPO 配置示例
 ```
 
-注: 当前仓库仅保留发布版文档、脚本和配置；脚本默认调用完整项目中的 `sft/`、`rl/`、`evaluation/`、`data_processing/`、`utils/` 实现。
+注: 当前仓库以发布版结构为主，已补齐 `README.md` 主线流程和现有 bash 脚本直接依赖的 `sft/`、`rl/`、`evaluation/`、`data_processing/`、`utils/` Python 入口；其余完整实验过程仍以原始仓库为准。
 
 ## 📝 训练数据说明
 

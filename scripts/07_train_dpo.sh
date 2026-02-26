@@ -49,4 +49,4 @@ python rl/train_dpo_trl.py \
 
 echo ""
 echo "DPO training complete!"
-echo "Run evaluation: bash scripts/03_evaluate.sh $OUTPUT_DIR/final_model"
+echo "Run evaluation on merged/full model as appropriate for your DPO output under: $OUTPUT_DIR"

@@ -29,7 +29,7 @@ python data_processing/generate_dpo_data_trl.py \
     --model_path "$MODEL_PATH" \
     --data_path data_processing/processed/rl_50k.jsonl \
     --output_path "$OUTPUT_PATH" \
-    --num_solutions "$NUM_SOLUTIONS" \
+    --n_solutions "$NUM_SOLUTIONS" \
     --max_tokens 2048 \
     --temperature 0.7 \
     --max_pairs_per_problem 3
