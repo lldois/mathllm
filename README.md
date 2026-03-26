@@ -12,11 +12,6 @@
 |-----------|:---:|:---:|:---:|:---:|
 | **GSM8K** | 73.69% | 81.88% | **83.70%** | +10.01 |
 | **MATH-500** | 50.00% | 53.80% | **61.40%** | +11.40 |
-| **MATH-500 (MV@64)** | - | - | **66.00%** | - |
-| **AIME 2024** | 0.00% | 0.00% | **3.33%** | +3.33 |
-| **AIME 2025** | 0.00% | 3.33% | 0.00% | - |
-| **MMLU-STEM** | 9.38% | - | **64.36%** | +54.98 |
-| **OlympiadBench** | 0.00% | - | 0.00% | - |
 
 ### 与专用数学模型对比
 
@@ -27,8 +22,7 @@
 | Qwen2.5-Math-7B-Instruct | 7B | 93.93% | 71.60% | 72.00% | 23.33% |
 
 - ✅ **Greedy decoding 已追平** Qwen2.5-Math-1.5B-Instruct (61.40% vs 61.60%)
-- ✅ **Majority Vote@64 已超越** Qwen2.5-Math-1.5B-Instruct (66.00% > 63.60%)
-- ✅ **全面超越** Qwen2.5-3B-Instruct
+- ✅ **超越** Qwen2.5-3B-Instruct
 
 ## 🏗️ 最优训练流程
 
@@ -77,7 +71,6 @@ Qwen2.5-3B-Base (50.00%)
 | Temperature | 0.9 |
 | Gradient Accumulation | 4 |
 | Max Steps | 300 (最佳 checkpoint) |
-| 训练时间 | ~3 小时 |
 | 最佳结果 | **61.40%** greedy / **66.00%** MV@64 |
 
 ## 🔬 关键消融发现
@@ -222,27 +215,6 @@ bash scripts/07_train_dpo.sh
 bash scripts/08_two_stage_sft_replay.sh
 ```
 
-## 📁 项目结构
-
-```
-mathllm/
-├── README.md                  # 项目说明
-├── scripts/                   # 可复现的训练/评估脚本
-│   ├── 00_full_pipeline.sh    # 全流程: 数据处理 → SFT → GRPO → 评估
-│   ├── 01_sft_distill.sh      # Stage 1: 蒸馏 SFT
-│   ├── 02_grpo.sh             # Stage 2: GRPO
-│   ├── 03_evaluate.sh         # MATH-500 greedy 评估
-│   ├── 04_evaluate_mv.sh      # MATH-500 Majority Vote 评估
-│   ├── 05_evaluate_all_benchmarks.sh  # 全 benchmark 评估
-│   ├── 06_generate_dpo_data.sh    # DPO 偏好对生成
-│   ├── 07_train_dpo.sh        # DPO 训练
-│   └── 08_two_stage_sft_replay.sh  # 两阶段 SFT + Replay
-└── configs/
-    └── dpo_config.yaml        # DPO 配置示例
-```
-
-注: 当前仓库以发布版结构为主，已补齐 `README.md` 主线流程和现有 bash 脚本直接依赖的 `sft/`、`rl/`、`evaluation/`、`data_processing/`、`utils/` Python 入口；其余完整实验过程仍以原始仓库为准。
-
 ## 📝 训练数据说明
 
 ### SFT 数据: `sft_combined_v5.jsonl` (28,098 samples)
@@ -269,8 +241,6 @@ mathllm/
 | AIME 2025 | 30 | 美国数学邀请赛 |
 | MMLU-STEM | 570+ | STEM 多选题 |
 | OlympiadBench | 675 | 国际数学奥赛 |
-
-## ⚙️ 关键技术细节
 
 ### 答案提取与匹配
 
